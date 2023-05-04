@@ -25,7 +25,7 @@ def post_error(message):
     }
 
     if api_url:
-        requests.post(api_url + "api/build/messages", json=message)
+        requests.post(f"{api_url}api/build/messages", json=message)
     else:
         from pprint import pprint
         pprint(message)
@@ -35,13 +35,13 @@ def parse(filename):
         schema = json.loads(open("udl.schema").read())
         schema = Draft7Validator(schema, format_checker=FormatChecker())
     except ValueError as e:
-        post_error("udl.schema - " + str(e))
+        post_error(f"udl.schema - {str(e)}")
         return
 
     try:
         udlfile = json.loads(open(filename, encoding="utf8").read())
     except ValueError as e:
-        post_error(filename + " - " + str(e))
+        post_error(f"{filename} - {str(e)}")
         return
 
     for error in schema.iter_errors(udlfile):
